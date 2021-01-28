@@ -12,10 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Classes for working with Google's Quantum Engine API."""
+
 from cirq.google import api
 
 from cirq.google.arg_func_langs import (
-    arg_from_proto,)
+    arg_from_proto,
+)
+
+from cirq.google.calibration import (
+    FloquetPhasedFSimCalibrationOptions,
+    FloquetPhasedFSimCalibrationRequest,
+    PhasedFSimCalibrationRequest,
+    PhasedFSimCalibrationResult,
+    PhasedFSimCharacterization,
+    run_characterizations,
+)
 
 from cirq.google.devices import (
     Bristlecone,
@@ -86,4 +98,5 @@ from cirq.google.op_serializer import (
 )
 
 from cirq.google.serializable_gate_set import (
-    SerializableGateSet,)
+    SerializableGateSet,
+)

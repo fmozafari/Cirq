@@ -25,6 +25,7 @@ from cirq import (
     _doc,
     type_workarounds,
 )
+
 with _import.delay_import('cirq.protocols'):
     from cirq import (
         # Core
@@ -55,6 +56,7 @@ from cirq import (
     testing,
     contrib,
 )
+
 # End dependency order list of sub-modules
 
 from cirq._version import (
@@ -67,6 +69,7 @@ from cirq.circuits import (
     AbstractCircuit,
     Circuit,
     CircuitDag,
+    CircuitOperation,
     FrozenCircuit,
     InsertStrategy,
     PointOptimizationSummary,
@@ -293,6 +296,8 @@ from cirq.ops import (
 )
 
 from cirq.optimizers import (
+    AlignLeft,
+    AlignRight,
     compute_cphase_exponents_for_fsim_decomposition,
     ConvertToCzAndSingleGates,
     decompose_cphase_into_two_fsim,
@@ -319,6 +324,7 @@ from cirq.optimizers import (
     SynchronizeTerminalMeasurements,
     two_qubit_matrix_to_operations,
     two_qubit_matrix_to_diagonal_and_operations,
+    three_qubit_matrix_to_operations,
 )
 
 from cirq.qis import (
@@ -359,6 +365,10 @@ from cirq.sim import (
     final_density_matrix,
     final_state_vector,
     final_wavefunction,
+    MPSSimulator,
+    MPSSimulatorStepResult,
+    MPSState,
+    MPSTrialResult,
     sample,
     sample_density_matrix,
     sample_state_vector,
@@ -489,6 +499,7 @@ from cirq.protocols import (
     QuilFormatter,
     read_json,
     resolve_parameters,
+    resolve_parameters_once,
     SupportsActOn,
     SupportsApplyChannel,
     SupportsApplyMixture,
@@ -537,7 +548,8 @@ from cirq.neutral_atoms import (
 )
 
 from cirq.vis import (
-    Heatmap,)
+    Heatmap,
+)
 
 from cirq.work import (
     CircuitSampleJob,
