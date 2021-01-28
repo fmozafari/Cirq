@@ -85,6 +85,7 @@ from cirq.protocols.measurement_key_protocol import (
     is_measurement,
     measurement_key,
     measurement_keys,
+    with_measurement_key_mapping,
     SupportsMeasurementKey,
 )
 from cirq.protocols.mixture_protocol import (
@@ -98,7 +99,9 @@ from cirq.protocols.mixture_protocol import (
 from cirq.protocols.mul_protocol import (
     mul,)
 from cirq.protocols.pauli_expansion_protocol import (
-    pauli_expansion,)
+    pauli_expansion,
+    SupportsPauliExpansion,
+)
 # pylint: disable=redefined-builtin
 from cirq.protocols.pow_protocol import (
     pow,)
@@ -118,6 +121,8 @@ from cirq.protocols.trace_distance_bound import (
 )
 from cirq.protocols.resolve_parameters import (
     is_parameterized,
+    parameter_names,
+    parameter_symbols,
     resolve_parameters,
     SupportsParameterization,
 )

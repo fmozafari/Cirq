@@ -50,6 +50,7 @@ from cirq.ops.common_channels import (
 from cirq.ops.common_gates import (
     CNOT,
     CNotPowGate,
+    cphase,
     CX,
     CXPowGate,
     CZ,
@@ -80,7 +81,9 @@ from cirq.ops.fourier_transform import (
 )
 
 from cirq.ops.fsim_gate import (
-    FSimGate,)
+    FSimGate,
+    PhasedFSimGate,
+)
 
 from cirq.ops.gate_features import (
     InterchangeableQubitsGate,
@@ -135,7 +138,9 @@ from cirq.ops.moment import (
     Moment,)
 
 from cirq.ops.named_qubit import (
-    NamedQubit,)
+    NamedQubit,
+    NamedQid,
+)
 
 from cirq.ops.op_tree import (
     flatten_op_tree,
@@ -166,6 +171,7 @@ from cirq.ops.pauli_interaction_gate import (
     PauliInteractionGate,)
 
 from cirq.ops.pauli_string import (
+    MutablePauliString,
     PAULI_GATE_LIKE,
     PAULI_STRING_LIKE,
     PauliString,
@@ -177,6 +183,9 @@ from cirq.ops.pauli_string_phasor import (
 
 from cirq.ops.pauli_string_raw_types import (
     PauliStringGateOperation,)
+
+from cirq.ops.permutation_gate import (
+    QubitPermutationGate,)
 
 from cirq.ops.phased_iswap_gate import (
     givens,
@@ -228,4 +237,6 @@ from cirq.ops.two_qubit_diagonal_gate import (
     TwoQubitDiagonalGate,)
 
 from cirq.ops.wait_gate import (
-    WaitGate,)
+    wait,
+    WaitGate,
+)

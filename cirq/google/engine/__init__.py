@@ -18,9 +18,15 @@
 from cirq.google.engine.calibration import (
     Calibration,)
 
+from cirq.google.engine.calibration_layer import (
+    CalibrationLayer,)
+from cirq.google.engine.calibration_result import (
+    CalibrationResult,)
 from cirq.google.engine.engine import (
     Engine,
     get_engine,
+    get_engine_calibration,
+    get_engine_device,
     ProtoVersion,
 )
 

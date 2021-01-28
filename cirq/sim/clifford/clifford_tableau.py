@@ -18,6 +18,7 @@ import numpy as np
 import cirq
 from cirq import protocols
 from cirq.ops.dense_pauli_string import DensePauliString
+from cirq.value import big_endian_int_to_digits
 
 
 class CliffordTableau():
@@ -31,18 +32,22 @@ class CliffordTableau():
     an eigenoperator of the state vector with eigenvalue one: P|psi> = |psi>.
     """
 
-    def __init__(self, num_qubits, initial_state=0):
+    def __init__(self, num_qubits, initial_state: int = 0):
+        """Initializes CliffordTableau
+        Args:
+            num_qubits: The number of qubits in the system.
+            initial_state: The computational basis representation of the
+                state as a big endian int.
+            """
         self.n = num_qubits
 
         self.rs = np.zeros(2 * self.n + 1, dtype=bool)
 
-        def bits(s):
-            while s > 0:
-                yield s & 1
-                s >>= 1
-
-        for (i, val) in enumerate(bits(initial_state)):
-            self.rs[2 * self.n - i - 1] = bool(val)
+        for (i, val) in enumerate(
+                big_endian_int_to_digits(initial_state,
+                                         digit_count=num_qubits,
+                                         base=2)):
+            self.rs[self.n + i] = bool(val)
 
         self.xs = np.zeros((2 * self.n + 1, self.n), dtype=bool)
         self.zs = np.zeros((2 * self.n + 1, self.n), dtype=bool)
@@ -130,35 +135,6 @@ class CliffordTableau():
             string += '\n'
 
         return string
-
-    def _CZ(self, q, r):
-        self._H(r)
-        self._CNOT(q, r)
-        self._H(r)
-
-    def _X(self, q):
-        self.rs[:] ^= self.zs[:, q]
-
-    def _Y(self, q):
-        self.rs[:] ^= self.xs[:, q] ^ self.zs[:, q]
-
-    def _Z(self, q):
-        self.rs[:] ^= self.xs[:, q]
-
-    def _S(self, q):
-        self.rs[:] ^= (self.xs[:, q] & self.zs[:, q])
-        self.zs[:, q] ^= self.xs[:, q]
-
-    def _H(self, q):
-        (self.xs[:, q], self.zs[:, q]) = (self.zs[:, q].copy(),
-                                          self.xs[:, q].copy())
-        self.rs[:] ^= (self.xs[:, q] & self.zs[:, q])
-
-    def _CNOT(self, q1, q2):
-        self.rs[:] ^= self.xs[:,q1] & self.zs[:,q2] & \
-            (~(self.xs[:,q2] ^ self.zs[:,q1]))
-        self.xs[:, q2] ^= self.xs[:, q1]
-        self.zs[:, q1] ^= self.zs[:, q2]
 
     def _rowsum(self, q1, q2):
         """Implements the "rowsum" routine defined by

@@ -14,8 +14,8 @@
 
 """Basic types defining qubits, gates, and operations."""
 
-from typing import (Any, Callable, Collection, Dict, Hashable, Optional,
-                    Sequence, Tuple, TypeVar, TYPE_CHECKING, Union)
+from typing import (AbstractSet, Any, Callable, Collection, Dict, Hashable,
+                    Optional, Sequence, Tuple, TypeVar, TYPE_CHECKING, Union)
 
 import abc
 import functools
@@ -529,6 +529,13 @@ class TaggedOperation(Operation):
         return TaggedOperation(self.sub_operation.with_qubits(*new_qubits),
                                *self._tags)
 
+    def _with_measurement_key_mapping_(self, key_map: Dict[str, str]):
+        sub_op = protocols.with_measurement_key_mapping(self.sub_operation,
+                                                        key_map)
+        if sub_op is NotImplemented:
+            return NotImplemented
+        return TaggedOperation(sub_op, *self.tags)
+
     def controlled_by(self,
                       *control_qubits: 'cirq.Qid',
                       control_values: Optional[Sequence[
@@ -611,6 +618,12 @@ class TaggedOperation(Operation):
     def _is_parameterized_(self) -> bool:
         return protocols.is_parameterized(self.sub_operation) or any(
             protocols.is_parameterized(tag) for tag in self.tags)
+
+    def _parameter_names_(self) -> AbstractSet[str]:
+        tag_params = {
+            name for tag in self.tags for name in protocols.parameter_names(tag)
+        }
+        return protocols.parameter_names(self.sub_operation) | tag_params
 
     def _resolve_parameters_(self, resolver):
         resolved_op = protocols.resolve_parameters(self.sub_operation, resolver)

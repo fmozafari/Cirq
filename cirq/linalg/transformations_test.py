@@ -500,7 +500,7 @@ def test_sub_state_vector_non_kron():
 
 def test_sub_state_vector_invalid_inputs():
 
-    # State cannot be expressed as a seperable pure state.
+    # State cannot be expressed as a separable pure state.
     with pytest.raises(ValueError, match='7'):
         cirq.sub_state_vector(np.arange(7), [1, 2], atol=1e-8)
 
@@ -671,3 +671,10 @@ def test_deprecated():
         # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
         _ = cirq.partial_trace_of_state_vector_as_mixture(wavefunction=a,
                                                           keep_indices=[0])
+
+
+def test_to_special():
+    u = cirq.testing.random_unitary(4)
+    su = cirq.to_special(u)
+    assert not cirq.is_special_unitary(u)
+    assert cirq.is_special_unitary(su)

@@ -15,8 +15,8 @@
 """Basic types defining qubits, gates, and operations."""
 
 import re
-from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Optional,
-                    Sequence, Tuple, TypeVar, TYPE_CHECKING, Union)
+from typing import (AbstractSet, Any, cast, Dict, FrozenSet, Iterable, List,
+                    Optional, Sequence, Tuple, TypeVar, TYPE_CHECKING, Union)
 
 import numpy as np
 
@@ -33,7 +33,10 @@ TSelf = TypeVar('TSelf', bound='GateOperation')
 
 @value.value_equality(approximate=True)
 class GateOperation(raw_types.Operation):
-    """An application of a gate to a sequence of qubits."""
+    """An application of a gate to a sequence of qubits.
+
+    Objects of this type are immutable.
+    """
 
     def __init__(self, gate: 'cirq.Gate', qubits: Sequence['cirq.Qid']) -> None:
         """
@@ -60,6 +63,16 @@ class GateOperation(raw_types.Operation):
 
     def with_gate(self, new_gate: 'cirq.Gate') -> 'cirq.Operation':
         if self.gate is new_gate:
+            # As GateOperation is immutable, this can return the original.
+            return self
+        return new_gate.on(*self.qubits)
+
+    def _with_measurement_key_mapping_(self, key_map: Dict[str, str]):
+        new_gate = protocols.with_measurement_key_mapping(self.gate, key_map)
+        if new_gate is NotImplemented:
+            return NotImplemented
+        if new_gate is self.gate:
+            # As GateOperation is immutable, this can return the original.
             return self
         return new_gate.on(*self.qubits)
 
@@ -191,6 +204,12 @@ class GateOperation(raw_types.Operation):
 
     def _is_parameterized_(self) -> bool:
         getter = getattr(self.gate, '_is_parameterized_', None)
+        if getter is not None:
+            return getter()
+        return NotImplemented
+
+    def _parameter_names_(self) -> AbstractSet[str]:
+        getter = getattr(self.gate, '_parameter_names_', None)
         if getter is not None:
             return getter()
         return NotImplemented

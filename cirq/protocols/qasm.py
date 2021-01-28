@@ -19,7 +19,7 @@ from typing import TYPE_CHECKING, Union, Any, Tuple, TypeVar, Optional, Dict, \
 from typing_extensions import Protocol
 
 from cirq import ops
-from cirq._doc import document
+from cirq._doc import doc_private
 from cirq.type_workarounds import NotImplementedType
 
 if TYPE_CHECKING:
@@ -82,7 +82,7 @@ class SupportsQasm(Protocol):
     will be used instead.
     """
 
-    @document
+    @doc_private
     def _qasm_(self) -> Union[None, NotImplementedType, str]:
         pass
 
@@ -95,7 +95,7 @@ class SupportsQasmWithArgs(Protocol):
     will be used instead.
     """
 
-    @document
+    @doc_private
     def _qasm_(self,
                args: QasmArgs) -> Union[None, NotImplementedType, str]:
         pass
@@ -109,7 +109,7 @@ class SupportsQasmWithArgsAndQubits(Protocol):
     will be used instead.
     """
 
-    @document
+    @doc_private
     def _qasm_(self,
                qubits: Tuple['cirq.Qid'],
                args: QasmArgs) -> Union[None, NotImplementedType, str]:
@@ -139,8 +139,8 @@ def qasm(val: Any,
             needed for `cirq.Gate` values, which otherwise wouldn't know what
             qubits to talk about.
         default: A default result to use if the value doesn't have a
-            `_qasm_` method or that method returns `NotImplemented` or
-            `None`. If not specified, undecomposable values cause a `TypeError`.
+            `_qasm_` method or that method returns `NotImplemented` or `None`.
+            If not specified, non-decomposable values cause a `TypeError`.
 
     Returns:
         The result of `val._qasm_(...)`, if `val` has a `_qasm_`

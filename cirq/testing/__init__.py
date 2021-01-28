@@ -28,7 +28,7 @@ from cirq.testing.circuit_compare import (
 )
 
 from cirq.testing.consistent_act_on import (
-    assert_act_on_clifford_tableau_effect_matches_unitary,)
+    assert_all_implemented_act_on_effects_match_unitary,)
 
 from cirq.testing.consistent_phase_by import (
     assert_phase_by_is_consistent_with_unitary,)
@@ -49,6 +49,9 @@ from cirq.testing.consistent_protocols import (
 from cirq.testing.consistent_qasm import (
     assert_qasm_is_consistent_with_unitary,)
 
+from cirq.testing.consistent_resolve_parameters import (
+    assert_consistent_resolve_parameters,)
+
 from cirq.testing.consistent_specified_has_unitary import (
     assert_specifies_has_unitary_if_unitary,)
 
@@ -57,6 +60,9 @@ from cirq.testing.equals_tester import (
 
 from cirq.testing.equivalent_repr_eval import (
     assert_equivalent_repr,)
+
+from cirq.testing.equivalent_basis_map import (
+    assert_equivalent_computational_basis_map)
 
 from cirq.testing.json import (
     assert_json_roundtrip_works,)
@@ -74,12 +80,16 @@ from cirq.testing.lin_alg_utils import (
 from cirq.testing.logs import (
     assert_logs,)
 
+from cirq.testing.no_identifier_qubit import (
+    NoIdentifierQubit,)
+
 from cirq.testing.order_tester import (
     OrderTester,)
 
 from cirq.testing.random_circuit import (
     DEFAULT_GATE_DOMAIN,
     random_circuit,
+    random_two_qubit_circuit_with_czs,
 )
 
 from cirq.testing.sample_circuits import (
